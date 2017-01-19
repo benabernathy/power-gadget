@@ -247,7 +247,6 @@ cmdline(int argc, char **argv)
         switch (opt) {
         case 'e':
             delay_ms_temp = atoi(optarg);
-            fprintf(stdout, "Sampling delay set to %d\n", delay_ms_temp );
             if(delay_ms_temp > 50) {
                 delay_us = delay_ms_temp * 1000;
             } else {
@@ -264,11 +263,9 @@ cmdline(int argc, char **argv)
             break;
         case 'a':
             bcastaddr = optarg;
-            fprintf(stdout, "Here in address!\n");
             break;
         case 'p':
             bcastport = atoi(optarg);
-            fprintf(stdout, "Here! in port!\n");
             break;
         case 'h':
             usage();
@@ -302,6 +299,12 @@ main(int argc, char **argv)
 
     progname = argv[0];
 
+    ret = cmdline(argc, argv);
+    if (ret) {
+        terminate_rapl();
+        return ret;
+    }
+
     /* Clean up if we're told to exit */
     signal(SIGINT, sigint_handler);
 
@@ -319,11 +322,7 @@ main(int argc, char **argv)
     }
     num_node = get_num_rapl_nodes_pkg();
 
-    ret = cmdline(argc, argv);
-    if (ret) {
-        terminate_rapl();
-        return ret;
-    }
+
 
     do_print_energy_info();
 
