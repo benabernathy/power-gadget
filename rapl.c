@@ -575,11 +575,15 @@ get_rapl_unit_multiplier(uint64_t                cpu,
     err = !is_supported_msr(MSR_RAPL_POWER_UNIT);
 
     if (err) {
-        fprintf(stderr, "RAPL Error: MSR RAPL Power Unit is not supported (%x).\n", MSR_RAPL_POWER_UNIT);
+        fprintf(stderr, "RAPL Error: MSR RAPL Power Unit is not supported (%d).\n", MSR_RAPL_POWER_UNIT);
     }
 
     if (!err) {
         err = read_msr(cpu, MSR_RAPL_POWER_UNIT, &msr);
+
+        if (err) {
+            fprintf(stderr, "RAPL Error: Unable to read MSR_RAPL_POWER_UNIT for cpu: %d (%d).\n", cpu, err);
+        }        
     }
     if (!err) {
         unit_msr = *(rapl_unit_multiplier_msr_t *)&msr;
