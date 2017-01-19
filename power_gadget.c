@@ -30,6 +30,9 @@ uint64_t      num_node = 0;
 uint64_t      delay_us = 1000000;
 double        duration = 3600.0;
 double        delay_unit = 1000000.0;
+char         *bcastaddr;
+int           bcastport = 0;
+int           bcast = 0;
 
 double
 get_rapl_energy_info(uint64_t power_domain, uint64_t node)
@@ -228,7 +231,7 @@ usage()
 {
     fprintf(stdout, "\nIntel(r) Power Gadget %s\n", version);
     fprintf(stdout, "\nUsage: \n");
-    fprintf(stdout, "%s [-e [sampling delay (ms) ] optional] -d [duration (sec)]\n", progname);
+    fprintf(stdout, "%s [-e [sampling delay (ms) ] optional] -d [duration (sec) -a [udp broadcast address] -p [udp broadcast port]] \n", progname);
     fprintf(stdout, "\nExample: %s -e 1000 -d 10\n", progname);
     fprintf(stdout, "\n");
 }
@@ -258,6 +261,12 @@ cmdline(int argc, char **argv)
                 return -1;
             }
             break;
+        case 'a':
+            bcastaddr = optarg;
+            break;
+        case 'p':
+            bcastport = atoi(optarg);
+            break;
         case 'h':
             usage();
             exit(0);
@@ -267,6 +276,12 @@ cmdline(int argc, char **argv)
             return -1;
         }
     }
+
+    if (bcastport != 0 && bcastaddr != NULL) {
+        fprintf(stdout, "Set up to broadcast UDP at: %s:%d\n", bcastaddr, bcastport);
+        bcast = 1;
+    }
+
     return 0;
 }
 
