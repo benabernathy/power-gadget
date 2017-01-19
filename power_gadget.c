@@ -243,7 +243,7 @@ cmdline(int argc, char **argv)
     int             opt;
     uint64_t    delay_ms_temp = 1000;
 
-    while ((opt = getopt(argc, argv, "e:d:")) != -1) {
+    while ((opt = getopt(argc, argv, "e:d:a:p:")) != -1) {
         switch (opt) {
         case 'e':
             delay_ms_temp = atoi(optarg);
