@@ -224,6 +224,7 @@ init_rapl()
 {
     int      err = 0;
     uint32_t processor_signature;
+    int      type_printed = 0;
 
     processor_signature = get_processor_signature();
     msr_support_table = (unsigned char*) calloc(MSR_SUPPORT_MASK, sizeof(unsigned char));
@@ -255,6 +256,10 @@ init_rapl()
 
     switch (processor_signature & 0xfffffff0) {
     case 0x306e0: /* IvyBridge server: 0x306eX (Tables 35:11,12,14,15,16) */
+        if (!type_printed) {
+            fprintf(stderr, "Procssor signature: IvyBridge Server (%x)\n", processor_signature);
+            type_printed = 1;
+        }
         msr_support_table[MSR_RAPL_POWER_UNIT & MSR_SUPPORT_MASK]          = 1;
         msr_support_table[MSR_RAPL_PKG_POWER_LIMIT & MSR_SUPPORT_MASK]     = 1;
         msr_support_table[MSR_RAPL_PKG_ENERGY_STATUS & MSR_SUPPORT_MASK]   = 1;
@@ -275,8 +280,20 @@ init_rapl()
     case 0x40660: /* Haswell:            0x4066X (Tables 35:11,12,14,17,19) */
     case 0x40650: /* Haswell:            0x4065X (Tables 35:11,12,14,17,18,19) */
     case 0x306c0: /* Haswell:            0x306cX (Tables 35:11,12,14,17,19) */
+        if (!type_printed) {
+            fprintf(stderr, "Procssor signature: Haswell (%x)\n", processor_signature);
+            type_printed = 1;
+        }
     case 0x306a0: /* IvyBridge client:   0x306aX (Tables 35:11,12,14) */
+        if (!type_printed) {
+            fprintf(stderr, "Procssor signature: IvyBridge Client (%x)\n", processor_signature);
+            type_printed = 1;
+        }
     case 0x206a0: /* SandyBridge client: 0x206aX (Tables 35:11,12) */
+        if (!type_printed) {
+            fprintf(stderr, "Procssor signature: SandyBridge Client (%x)\n", processor_signature);
+            type_printed = 1;
+        }
         msr_support_table[MSR_RAPL_POWER_UNIT & MSR_SUPPORT_MASK]          = 1;
         msr_support_table[MSR_RAPL_PKG_POWER_LIMIT & MSR_SUPPORT_MASK]     = 1;
         msr_support_table[MSR_RAPL_PKG_ENERGY_STATUS & MSR_SUPPORT_MASK]   = 1;
@@ -296,6 +313,10 @@ init_rapl()
         break;
     //case 0x20650: /* Valgrind */
     case 0x206d0: /* SandyBridge server: 0x206dX (Tables 35:11,13) */
+        if (!type_printed) {
+            fprintf(stderr, "Procssor signature: SandyBridge Server (%x)\n", processor_signature);
+            type_printed = 1;
+        }
         msr_support_table[MSR_RAPL_POWER_UNIT & MSR_SUPPORT_MASK]          = 1;
         msr_support_table[MSR_RAPL_PKG_POWER_LIMIT & MSR_SUPPORT_MASK]     = 1;
         msr_support_table[MSR_RAPL_PKG_ENERGY_STATUS & MSR_SUPPORT_MASK]   = 1;
