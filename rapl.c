@@ -341,8 +341,9 @@ init_rapl()
 
     err = read_rapl_units();
 
-    if (!err) {
+    if (err) {
         fprintf(stderr, "RAPL units were not initialized because of an error (%d)\n", err);
+        fprintf(stderr, "Make sure code is run as root or with the sudo command.\n");
     }
 
     err += build_topology();

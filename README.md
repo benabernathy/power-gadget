@@ -32,6 +32,8 @@ To build:
 To run: 
 > ./power_gadget [-e [sampling_delay_ms ] optional] -d duration]
 
+*Note:* power gadget must be run as root.
+
 
 Known Limitations / Issues / BKMs
 -----------------------------------
