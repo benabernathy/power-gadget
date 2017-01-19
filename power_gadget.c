@@ -263,9 +263,11 @@ cmdline(int argc, char **argv)
             break;
         case 'a':
             bcastaddr = optarg;
+            fprintf(stdout, "Here in address!\n");
             break;
         case 'p':
             bcastport = atoi(optarg);
+            fprintf(stdout, "Here! in port!\n");
             break;
         case 'h':
             usage();
