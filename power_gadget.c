@@ -240,8 +240,6 @@ cmdline(int argc, char **argv)
     int             opt;
     uint64_t    delay_ms_temp = 1000;
 
-    progname = argv[0];
-
     while ((opt = getopt(argc, argv, "e:d:")) != -1) {
         switch (opt) {
         case 'e':
@@ -283,6 +281,8 @@ main(int argc, char **argv)
 {
     int i = 0;
     int ret = 0;
+
+    progname = argv[0];
 
     /* Clean up if we're told to exit */
     signal(SIGINT, sigint_handler);
