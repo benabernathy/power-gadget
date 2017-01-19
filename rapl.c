@@ -340,6 +340,11 @@ init_rapl()
     }
 
     err = read_rapl_units();
+
+    if (!err) {
+        fprintf(stderr, "RAPL units were not initialized because of an error (%d)\n", err);
+    }
+
     err += build_topology();
 
     /* 32 is the width of these fields when they are stored */
@@ -1288,6 +1293,13 @@ read_rapl_units()
         RAPL_TIME_UNIT = unit_multiplier.time;
         RAPL_ENERGY_UNIT = unit_multiplier.energy;
         RAPL_POWER_UNIT = unit_multiplier.power;
+
+        fprintf(stderr, "RAPL Time Unit: %f\n", RAPL_TIME_UNIT);
+        fprintf(stderr, "RAPL Energy Unit: %f\n", RAPL_ENERGY_UNIT);
+        fprintf(stderr, "RAPL Power Unit: %f\n", RAPL_POWER_UNIT);
+    }
+    else {
+        fprintf(stderr, "Error getting unit multiplier (%d).\n", err);
     }
 
     return err;
